@@ -11,14 +11,18 @@ Use this image to run a container with latest stable of php7. it ships with:
  - GD
  - iconv
  - mbstring
-
+ - git
+ - composer
+ - xdebug
 
 ----------
 ##usage
 
     docker pull mehrdadkhah/php7
  
- 
+**Access to php7 bash**
+	docker exec -it php7 bash
+
 **Run a complete webserver with all development tools (lemp)**
 
 
