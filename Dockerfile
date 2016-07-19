@@ -58,13 +58,12 @@ RUN apt-get update && apt-get install git git-core -y \
 #install xdebugy
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-# remove not necessary files
-RUN rm -rf /var/lib/apt/lists/*
-
-
 RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# remove unnecessary files
+RUN rm -rf /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
