@@ -23,11 +23,19 @@ RUN apt-get update && apt-get install -y \
 
 ENV PHPREDIS_VERSION php7
 
-RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz \
-    && tar xfz /tmp/redis.tar.gz \
-    && rm -r /tmp/redis.tar.gz \
-    && mv phpredis-$PHPREDIS_VERSION /usr/src/php/ext/redis \
-    && docker-php-ext-install redis
+RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz  \
+    && mkdir /tmp/redis \
+    && tar -xf /tmp/redis.tar.gz -C /tmp/redis \
+    && rm /tmp/redis.tar.gz \
+    && ( \
+    cd /tmp/redis/phpredis-$PHPREDIS_VERSION \
+    && phpize \
+        && ./configure \
+    && make -j$(nproc) \
+        && make install \
+    ) \
+    && rm -r /tmp/redis \
+    && docker-php-ext-enable redis
 
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -38,11 +46,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
-RUN cd /tmp/ && \
-    curl -O https://pecl.php.net/get/apcu-5.1.3.tgz && \
-    tar zxvf apcu-5.1.3.tgz && \
-    mv apcu-5.1.3 /usr/src/php/ext/apcu \
-    && docker-php-ext-install -j$(nproc) apcu
+
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
 
 #install Imagemagick & PHP Imagick ext
 RUN apt-get update && apt-get install -y \
