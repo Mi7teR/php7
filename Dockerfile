@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install opcache \
+    && docker-php-ext-install mysqli \
     && pecl install imagick  \
     && docker-php-ext-enable imagick \
     && pecl install apcu \
