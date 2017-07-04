@@ -36,7 +36,7 @@ make install
 
 apt-get -y install libx265-dev
 
-apt-get install cmake mercurial
+apt-get -y install cmake mercurial
 cd ~/ffmpeg_sources
 hg clone https://bitbucket.org/multicoreware/x265
 cd ~/ffmpeg_sources/x265/build/linux
@@ -110,3 +110,8 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
 PATH="$HOME/bin:$PATH" make
 make install
 hash -r
+
+cp ~/bin/ffmpeg /usr/bin/
+cp ~/bin/ffprobe /usr/bin/
+cp ~/bin/ffplay /usr/bin/
+cp ~/bin/ffserver /usr/bin/
