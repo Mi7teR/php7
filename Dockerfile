@@ -33,10 +33,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable imagick \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
-    && pecl install xdebug \
-    && apt-get purge --auto-remove -y g++ \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && pecl install xdebug
 
 ENV PHPREDIS_VERSION php7
 
@@ -61,5 +58,36 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN usermod -u 1000 www-data
 
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+RUN apt-get update && \
+    apt-get -qqy install --no-install-recommends \
+        autoconf \
+        automake \
+        build-essential \
+        ca-certificates \
+        mercurial \
+        cmake \
+        libass-dev \
+        libgpac-dev \
+        libtheora-dev \
+        libtool \
+        libvdpau-dev \
+        libvorbis-dev \
+        pkg-config \
+        texi2html \
+        zlib1g-dev \
+        libmp3lame-dev \
+        wget \
+        yasm
+
+
+# Run build script
+
+ADD script/buildFFmpeg.sh /build.sh
+RUN ["/bin/bash", "/build.sh"]
+
+RUN apt-get purge --auto-remove -y g++ git wget pkg-config cmake automake build-essential autoconf\
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 CMD ["php-fpm"]

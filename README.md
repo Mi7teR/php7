@@ -15,6 +15,7 @@ Use this image to run a container with latest stable of php7. it ships with:
  - composer
  - xdebug
 
+and in ffmpeg tag image contain latest version of FFmpeg.
 ----------
 ##usage
 
