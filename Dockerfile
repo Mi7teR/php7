@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
+        libzip-dev \
         libmagickwand-dev --no-install-recommends \
     && docker-php-ext-configure intl \
     && docker-php-ext-install mbstring \
