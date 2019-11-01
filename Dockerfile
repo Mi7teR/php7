@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
         libzip-dev \
         libmagickwand-dev --no-install-recommends \
     && docker-php-ext-configure intl \
-    && pecl install mcrypt-1.0.1 && \
+    && pecl install mcrypt-1.0.1 \
     && docker-php-ext-enable mcrypt \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install intl \
