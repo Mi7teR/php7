@@ -41,21 +41,6 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV PHPREDIS_VERSION php7
-
-RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz  \
-    && mkdir /tmp/redis \
-    && tar -xf /tmp/redis.tar.gz -C /tmp/redis \
-    && rm /tmp/redis.tar.gz \
-    && ( \
-    cd /tmp/redis/phpredis-$PHPREDIS_VERSION \
-    && phpize \
-        && ./configure \
-    && make -j$(nproc) \
-        && make install \
-    ) \
-    && rm -r /tmp/redis \
-    && docker-php-ext-enable redis
 
 RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
 
